@@ -21,6 +21,13 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Set header to indicate the response is a json
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, `{"values": "%s"}`, values)
+
+	// Generated Expression
+	expression, err := h.Controller.ExpressionController(values)
+	if err != nil {
+		fmt.Fprintf(w, `{"error": "%s"}`, err)
+	}
+
+	fmt.Fprintf(w, `{"values": "%s"}`, expression)
 
 }
