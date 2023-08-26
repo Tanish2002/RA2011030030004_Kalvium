@@ -14,12 +14,10 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/history", config.Handler.HistoryHandler)
-	router.HandleFunc("/{path:.*}", config.Handler.ExpressionHandler)
-
-	http.Handle("/", router)
+	router.HandleFunc("/{history:history\\/?}", config.Handler.HistoryHandler).Methods(http.MethodGet)
+	router.HandleFunc("/{path:.*\\/?}", config.Handler.ExpressionHandler).Methods(http.MethodGet)
 
 	fmt.Println("Server listening on :8080")
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", router)
 }
