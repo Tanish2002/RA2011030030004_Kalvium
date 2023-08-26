@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -13,10 +12,18 @@ func (h *Handler) HistoryHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
-		fmt.Fprintf(w, `{"error": "%s"}`, err)
+		resp := errorResponse{
+			Error: err,
+		}
+		err = json.NewEncoder(w).Encode(resp)
+		return
 	}
 	err = json.NewEncoder(w).Encode(history)
 	if err != nil {
-		fmt.Fprintf(w, `{"error": "%s"}`, err)
+		resp := errorResponse{
+			Error: err,
+		}
+		err = json.NewEncoder(w).Encode(resp)
+		return
 	}
 }

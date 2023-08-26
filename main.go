@@ -14,6 +14,7 @@ func main() {
 
 	router := mux.NewRouter()
 
+	router.HandleFunc("/", config.Handler.ExamplesHandler)
 	router.HandleFunc("/{history:history\\/?}", config.Handler.HistoryHandler).Methods(http.MethodGet)
 	router.HandleFunc("/{path:.*\\/?}", config.Handler.ExpressionHandler).Methods(http.MethodGet)
 

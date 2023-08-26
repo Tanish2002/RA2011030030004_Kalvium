@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"kalvium/controllers"
 	"net/http"
 	"strings"
@@ -11,6 +11,15 @@ import (
 
 type Handler struct {
 	Controller controllers.Controller
+}
+
+type errorResponse struct {
+	Error error `json:"error"`
+}
+
+type expressionResponse struct {
+	Question string  `json:"question"`
+	Answer   float64 `json:"answer"`
 }
 
 func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
@@ -26,8 +35,16 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 	// Generated Expression
 	answer, expression, err := h.Controller.ExpressionController(values)
 	if err != nil {
-		fmt.Fprintf(w, `{"error": "%s"}`, err)
+		resp := errorResponse{
+			Error: err,
+		}
+		err = json.NewEncoder(w).Encode(resp)
+		return
 	}
 
-	fmt.Fprintf(w, `{"question": "%s", "answer": "%.2f"}`, expression, answer)
+	resp := expressionResponse{
+		Question: expression,
+		Answer:   answer,
+	}
+	err = json.NewEncoder(w).Encode(resp)
 }
