@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"kalvium/controllers"
 	"kalvium/handlers"
-	"kalvium/middleware"
 	"kalvium/models"
 
 	"gorm.io/driver/sqlite"
@@ -12,8 +11,7 @@ import (
 )
 
 type Configuration struct {
-	Handler    handlers.Handler
-	Middleware middleware.Middleware
+	Handler handlers.Handler
 }
 
 // Generate a new state with DB connection
@@ -33,11 +31,6 @@ func NewConfig() Configuration {
 				Model: models.Model{
 					DB: db,
 				},
-			},
-		},
-		Middleware: middleware.Middleware{
-			Model: models.Model{
-				DB: db,
 			},
 		},
 	}

@@ -6,6 +6,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Knetic/govaluate"
 )
@@ -14,7 +15,7 @@ type Controller struct {
 	Model models.Model
 }
 
-func (c *Controller) ExpressionController(paths []string) (interface{}, string, error) {
+func (c *Controller) ExpressionController(paths []string) (float64, string, error) {
 	// Create the expression
 	expression, err := expressionMaker(paths)
 	if err != nil {
@@ -22,10 +23,21 @@ func (c *Controller) ExpressionController(paths []string) (interface{}, string, 
 	}
 
 	// Evaluate the expression
-	evaluatedExpr, err := expressionEvaluator(expression)
+	evaluatedExprInterface, err := expressionEvaluator(expression)
 	if err != nil {
 		return math.NaN(), "", err
 	}
+	evaluatedExpr, ok := evaluatedExprInterface.(float64)
+	if !ok {
+		return math.NaN(), "", err
+	}
+
+	// Add to Request to DB
+	c.Model.AddToRequestLog(&models.RequestLog{
+		Question:  expression,
+		Answer:    evaluatedExpr,
+		Timestamp: time.Now(),
+	})
 
 	return evaluatedExpr, expression, err
 }
