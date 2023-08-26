@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"kalvium/configuration"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("HTTP Expression evaluator")
+
+	// Get a new Config context
+	config := configuration.NewConfig()
+
+	http.HandleFunc("/", config.Handler.ExpressionHandler)
+	fmt.Println("Server listening on :8080")
+	http.ListenAndServe(":8080", nil)
 }

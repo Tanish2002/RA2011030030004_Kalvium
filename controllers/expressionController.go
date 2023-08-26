@@ -1,3 +1,6 @@
 package controllers
 
-// Controller logic
+type Controller struct {
+	DB string // db connection
+}
+
