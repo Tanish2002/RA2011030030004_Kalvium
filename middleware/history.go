@@ -16,12 +16,12 @@ func (m *Middleware) LoggingMiddleware(next http.Handler) http.Handler {
 		logEntry := models.RequestLog{
 			Method:    r.Method,
 			URL:       r.URL.String(),
-			Headers:   r.Header,
+			Headers:   models.HeadersWrapper(r.Header),
 			Timestamp: time.Now(),
 		}
 
 		// Add log entry to the circular buffer
-		m.Model.AddToRequestLog(logEntry)
+		m.Model.AddToRequestLog(&logEntry)
 
 		// Continue with the next handler
 		next.ServeHTTP(w, r)

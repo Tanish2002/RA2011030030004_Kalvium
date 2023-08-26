@@ -1,22 +1,42 @@
 package models
 
 import (
-	"fmt"
+	"database/sql/driver"
+	"encoding/json"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Model struct {
-	DB string
+	DB *gorm.DB
 }
 
 type RequestLog struct {
-	Method    string              `json:"method"`
-	URL       string              `json:"url"`
-	Headers   map[string][]string `json:"headers"`
-	Timestamp time.Time           `json:"timestamp"`
+	gorm.Model
+	Method    string         `json:"method"`
+	URL       string         `json:"url"`
+	Headers   HeadersWrapper `json:"headers" gorm:"type:json"`
+	Timestamp time.Time      `json:"timestamp"`
 }
 
-// TODO
-func (m *Model) AddToRequestLog(log RequestLog) {
-	fmt.Println(log)
+type HeadersWrapper map[string][]string
+
+func (hw HeadersWrapper) Value() (driver.Value, error) {
+	return json.Marshal(hw)
+}
+
+func (hw *HeadersWrapper) Scan(value interface{}) error {
+	return json.Unmarshal(value.([]byte), hw)
+}
+
+func (m *Model) AddToRequestLog(log *RequestLog) error {
+	result := m.DB.Create(log)
+	return result.Error
+}
+
+func (m *Model) GetRequestLog() RequestLog {
+	logs := RequestLog{}
+	m.DB.Order("timestamp desc").Limit(20).Find(&logs)
+	return logs
 }

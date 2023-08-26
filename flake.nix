@@ -18,7 +18,7 @@
       modules = [
         (_: {
           languages.go.enable = true;
-          packages = [pkgs.sqlite];
+          packages = with pkgs; [sqlite gcc];
         })
       ];
     };
