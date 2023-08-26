@@ -20,4 +20,3 @@ func NewConfig() Configuration {
 	}
 
 }
-

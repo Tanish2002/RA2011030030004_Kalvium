@@ -28,6 +28,6 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `{"error": "%s"}`, err)
 	}
 
-	fmt.Fprintf(w, `{"values": "%s"}`, expression)
+	fmt.Fprintf(w, `{"value": "%.2f"}`, expression)
 
 }
