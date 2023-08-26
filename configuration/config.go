@@ -21,4 +21,3 @@ func NewConfig() Configuration {
 
 }
 
-// will add some sort of DB(prob sqllite) for persisten history
