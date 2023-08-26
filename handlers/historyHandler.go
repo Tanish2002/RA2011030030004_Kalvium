@@ -13,7 +13,7 @@ func (h *Handler) HistoryHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		resp := errorResponse{
-			Error: err,
+			Error: err.Error(),
 		}
 		err = json.NewEncoder(w).Encode(resp)
 		return
@@ -21,7 +21,7 @@ func (h *Handler) HistoryHandler(w http.ResponseWriter, r *http.Request) {
 	err = json.NewEncoder(w).Encode(history)
 	if err != nil {
 		resp := errorResponse{
-			Error: err,
+			Error: err.Error(),
 		}
 		err = json.NewEncoder(w).Encode(resp)
 		return

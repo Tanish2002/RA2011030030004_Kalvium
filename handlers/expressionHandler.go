@@ -14,7 +14,7 @@ type Handler struct {
 }
 
 type errorResponse struct {
-	Error error `json:"error"`
+	Error string `json:"error"`
 }
 
 type expressionResponse struct {
@@ -36,7 +36,7 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 	answer, expression, err := h.Controller.ExpressionController(values)
 	if err != nil {
 		resp := errorResponse{
-			Error: err,
+			Error: err.Error(),
 		}
 		err = json.NewEncoder(w).Encode(resp)
 		return
