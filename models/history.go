@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Model struct {
 	DB string
@@ -14,4 +17,6 @@ type RequestLog struct {
 }
 
 // TODO
-func (m *Model) AddToRequestLog(log RequestLog)
+func (m *Model) AddToRequestLog(log RequestLog) {
+	fmt.Println(log)
+}

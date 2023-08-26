@@ -5,6 +5,8 @@ import (
 	"kalvium/controllers"
 	"net/http"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 type Handler struct {
@@ -13,7 +15,7 @@ type Handler struct {
 
 func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the URL path without the leading slash
-	path := r.URL.Path[1:]
+	path := mux.Vars(r)["path"]
 
 	// Split the path into an array of values using the "/" separator
 	values := strings.Split(path, "/")
