@@ -3,6 +3,7 @@ package configuration
 import (
 	"kalvium/controllers"
 	"kalvium/handlers"
+	"kalvium/models"
 )
 
 type Configuration struct {
@@ -14,7 +15,9 @@ func NewConfig() Configuration {
 	return Configuration{
 		Handler: handlers.Handler{
 			Controller: controllers.Controller{
-				DB: "",
+				Model: models.Model{
+					DB: "",
+				},
 			},
 		},
 	}

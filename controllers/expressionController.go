@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"kalvium/models"
 	"math"
 	"strconv"
 	"strings"
@@ -10,7 +11,7 @@ import (
 )
 
 type Controller struct {
-	DB string // db connection
+	Model models.Model
 }
 
 func (c *Controller) ExpressionController(paths []string) (interface{}, string, error) {
