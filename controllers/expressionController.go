@@ -84,6 +84,14 @@ func expressionMaker(paths []string) (string, error) {
 			paths[i] = "<<"
 		case "rshift":
 			paths[i] = ">>"
+		case "and":
+			paths[i] = "&"
+		case "or":
+			paths[i] = "|"
+		case "xor":
+			paths[i] = "^"
+		case "not":
+			paths[i] = "~"
 		default:
 			return "", fmt.Errorf("Invalid arithmetic operator %s", paths[i])
 		}

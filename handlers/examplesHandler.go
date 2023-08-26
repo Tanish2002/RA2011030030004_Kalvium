@@ -20,6 +20,14 @@ Example 6:
 /100/rshift/2 -> 25 (100>>2)
 Example 7:
 /100/modulo/3 -> 1 (100%3)
+Example 8:
+/5/or/9 -> 13 (5|9)
+Example 9:
+/5/and/9 -> 1 (5&9)
+Example 10:
+/5/xor/9 -> 12 (5^9)
+Example 10:
+/not/5 -> -6 (~5)
 `
 	fmt.Fprintf(w, examples)
 }
