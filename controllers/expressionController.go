@@ -2,38 +2,43 @@ package controllers
 
 import (
 	"fmt"
-	"go/token"
-	"go/types"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/Knetic/govaluate"
 )
 
 type Controller struct {
 	DB string // db connection
 }
 
-func (c *Controller) ExpressionController(paths []string) (float64, error) {
+func (c *Controller) ExpressionController(paths []string) (interface{}, string, error) {
+	// Create the expression
 	expression, err := expressionMaker(paths)
 	if err != nil {
-		return math.NaN(), err
+		return math.NaN(), "", err
 	}
+
+	// Evaluate the expression
 	evaluatedExpr, err := expressionEvaluator(expression)
-	return evaluatedExpr, err
+	if err != nil {
+		return math.NaN(), "", err
+	}
+
+	return evaluatedExpr, expression, err
 }
 
-func expressionEvaluator(expression string) (float64, error) {
-	fset := token.NewFileSet()
-	eval, err := types.Eval(fset, nil, token.NoPos, expression)
+func expressionEvaluator(expression string) (interface{}, error) {
+	evalExpress, err := govaluate.NewEvaluableExpression(expression)
 	if err != nil {
 		return math.NaN(), err
 	}
-	value, err := strconv.ParseFloat(eval.Value.ExactString(), 64)
+	result, err := evalExpress.Evaluate(nil)
 	if err != nil {
 		return math.NaN(), err
 	}
-	return value, nil
-
+	return result, nil
 }
 
 func expressionMaker(paths []string) (string, error) {
@@ -54,6 +59,18 @@ func expressionMaker(paths []string) (string, error) {
 			paths[i] = "*"
 		case "div":
 			paths[i] = "/"
+		case "modulo":
+			paths[i] = "%"
+		case "lbrack":
+			paths[i] = "("
+		case "rbrack":
+			paths[i] = ")"
+		case "pow":
+			paths[i] = "**"
+		case "lshift":
+			paths[i] = "<<"
+		case "rshift":
+			paths[i] = ">>"
 		default:
 			return "", fmt.Errorf("Invalid arithmetic operator %s", paths[i])
 		}

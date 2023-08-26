@@ -12,7 +12,6 @@ type Handler struct {
 }
 
 func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
-
 	// Get the URL path without the leading slash
 	path := r.URL.Path[1:]
 
@@ -23,11 +22,10 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Generated Expression
-	expression, err := h.Controller.ExpressionController(values)
+	answer, expression, err := h.Controller.ExpressionController(values)
 	if err != nil {
 		fmt.Fprintf(w, `{"error": "%s"}`, err)
 	}
 
-	fmt.Fprintf(w, `{"value": "%.2f"}`, expression)
-
+	fmt.Fprintf(w, `{"question": "%s", "answer": "%.2f"}`, expression, answer)
 }
