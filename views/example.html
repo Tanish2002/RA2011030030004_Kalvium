@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .expression {
+        font-style: italic;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Request</th>
+        <th>Response</th>
+        <th>Expression</th>
+      </tr>
+      <tr>
+        <td>
+          <a href="/5/plus/3"><code>/5/plus/3</code></a>
+        </td>
+        <td class="result">8</td>
+        <td class="expression">5+3</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/3/minus/5"><code>/3/minus/5</code></a>
+        </td>
+        <td class="result">-2</td>
+        <td class="expression">3-5</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/3/into/5/plus/8/into/6"
+            ><code>/3/into/5/plus/8/into/6</code></a
+          >
+        </td>
+        <td class="result">63</td>
+        <td class="expression">3*5+8*6</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/3/into/lbrack/5/plus/8/rbrack/pow/3"
+            ><code>/3/into/lbrack/5/plus/8/rbrack/pow/3</code></a
+          >
+        </td>
+        <td class="result">6591</td>
+        <td class="expression">3*(5+8)**3</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/7/lshift/1"><code>/7/lshift/1</code></a>
+        </td>
+        <td class="result">14</td>
+        <td class="expression">7&lt;&lt;1</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/100/rshift/2"><code>/100/rshift/2</code></a>
+        </td>
+        <td class="result">25</td>
+        <td class="expression">100&gt;&gt;2</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/100/modulo/3"><code>/100/modulo/3</code></a>
+        </td>
+        <td class="result">1</td>
+        <td class="expression">100%3</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/5/or/9"><code>/5/or/9</code></a>
+        </td>
+        <td class="result">13</td>
+        <td class="expression">5|9</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/5/and/9"><code>/5/and/9</code></a>
+        </td>
+        <td class="result">1</td>
+        <td class="expression">5&amp;9</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/5/xor/9"><code>/5/xor/9</code></a>
+        </td>
+        <td class="result">12</td>
+        <td class="expression">5^9</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/not/5"><code>/not/5</code></a>
+        </td>
+        <td class="result">-6</td>
+        <td class="expression">~5</td>
+      </tr>
+    </table>
+  </body>
+</html>

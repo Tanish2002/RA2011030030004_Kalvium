@@ -2,20 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
-	"kalvium/controllers"
 	"net/http"
 	"strings"
 
 	"github.com/gorilla/mux"
 )
-
-type Handler struct {
-	Controller controllers.Controller
-}
-
-type errorResponse struct {
-	Error string `json:"error"`
-}
 
 type expressionResponse struct {
 	Question string  `json:"question"`
@@ -29,16 +20,9 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 	// Split the path into an array of values using the "/" separator
 	values := strings.Split(path, "/")
 
-	// Set header to indicate the response is a json
-	w.Header().Set("Content-Type", "application/json")
-
 	// Generated Expression
 	answer, expression, err := h.Controller.ExpressionController(values)
-	if err != nil {
-		resp := errorResponse{
-			Error: err.Error(),
-		}
-		err = json.NewEncoder(w).Encode(resp)
+	if ok := h.errorResp(err, w); ok {
 		return
 	}
 
@@ -46,5 +30,11 @@ func (h *Handler) ExpressionHandler(w http.ResponseWriter, r *http.Request) {
 		Question: expression,
 		Answer:   answer,
 	}
+
+	// Set header to indicate the response is a json
+	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(resp)
+	if ok := h.errorResp(err, w); ok {
+		return
+	}
 }

@@ -1,29 +1,34 @@
 package handlers
 
 import (
-	"encoding/json"
+	"html/template"
 	"net/http"
+	"time"
 )
 
 func (h *Handler) HistoryHandler(w http.ResponseWriter, r *http.Request) {
 	history, err := h.Controller.HistoryController()
 
-	// Set header to indicate the response is a json
-	w.Header().Set("Content-Type", "application/json")
+	funcs := template.FuncMap{
+		"add": func(a, b int) int {
+			return a + b
+		},
+		"formatTime": func(timeStamp time.Time) string {
+			format := "02/01/2006 03:04 PM"
+			return timeStamp.Format(format)
+		},
+	}
+	const tmplFile = "./views/history.html"
+	tmpl := template.Must(template.New("history.html").Funcs(funcs).ParseFiles(tmplFile))
 
-	if err != nil {
-		resp := errorResponse{
-			Error: err.Error(),
-		}
-		err = json.NewEncoder(w).Encode(resp)
+	// Set header to indicate the response is a html page
+	w.Header().Set("Content-Type", "text/html")
+	err = tmpl.Execute(w, history)
+	if ok := h.errorResp(err, w); ok {
 		return
 	}
-	err = json.NewEncoder(w).Encode(history)
-	if err != nil {
-		resp := errorResponse{
-			Error: err.Error(),
-		}
-		err = json.NewEncoder(w).Encode(resp)
-		return
-	}
+}
+
+func add(x, y int) int {
+	return x + y
 }
