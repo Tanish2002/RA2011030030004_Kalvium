@@ -15,11 +15,10 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-
 COPY . .
 
 # Build the application
-RUN go build -o /kalvium-expression-evaluator
+RUN go build -o /kalvium-expression-evaluator -a -ldflags '-linkmode external -extldflags "-static"' .
 
 EXPOSE 8080
 
